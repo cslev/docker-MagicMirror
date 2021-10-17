@@ -1,0 +1,63 @@
+version: "3.6"
+services:
+  magicmirror:
+    container_name: magicmirror
+    restart: unless-stopped
+    image: cslev/magicmirror:latest
+    hostname: magicmirror
+    environment:
+      #define here more  linux apps to be installed from repository after container run
+      DOCKER_MODULE_ADDITIONAL_DEPS: 'iputils-ping'
+      #separate extra modules to be install with ';'
+      DOCKER_MODULE_INSTALL_GIT: 'https://github.com/slametps/MMM-Yeelight;https://github.com/Kreshnik/MMM-JokeAPI'
+      #redefine default install cmd if needed - you might concatenate extra commands to install stuff
+      DOCKER_MODULE_INSTALL_CMD: 'npm install'
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - './config:/opt/magic_mirror/config'
+      - './modules:/opt/magic_mirror/modules'
+      - './css:/opt/magic_mirror/css'
+      - './js:/opt/magic_mirror/js'
+      ####  raspberry pi + gpio
+      #- '/sys/class/gpio:/sys/class/gpio'
+    dns: 1.1.1.1
+    # ports:
+      # - "80:8080"
+    #### raspberry pi + gpio
+    #devices:
+    #  - '/dev/mem:/dev/mem'
+    #  - '/dev/gpiomem:/dev/gpiomem'
+    #  - '/dev/ttyAMA0:/dev/ttyAMA0'
+    #
+    # either add capabilities to restrict container rights, or make it privileged for full fledge
+    # I personally not like privileged mode; better to figure out what capabilites your modules need
+    cap_add: #MMM-Yeelight can work with these two capabilities and bridged to the home LAN (see below)
+      - NET_ADMIN
+      - NET_BROADCAST
+      #
+      #let's add ALL for testing purposes
+      #further capabilities defined here: https://docs.docker.com/engine/reference/run/
+    # privileged: true
+    
+#     ####  ADVANCED NETWORKING IF NEEDED
+#     # Let's fix it's docker IP address
+    networks:
+#       internal:
+#         ipv4_address: 172.30.1.2
+      priv_lan: #bridge container directly to our home LAN
+        ipv4_address: 192.168.22.15 #visit your router's admin page to avoid IP collision and add a fixed IP for the container there
+
+# #define the networks used by the container
+networks:
+#   internal:
+#     ipam:
+#       config:
+#         - subnet: 172.30.1.2
+  priv_lan:
+    external:
+      name: priv_lan
+#   #FOR PRIV_LAN, CREATE DOCKER NETWORK FIRST AS BELOW IN A TERMINAL (adapt it to your settings)
+#   #docker network create -d macvlan \
+#   #    --subnet=192.168.22.0/24 \
+#   #    --gateway=192.168.22.1 \
+#   #    -o parent=eth0 priv_lan
