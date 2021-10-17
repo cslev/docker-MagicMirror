@@ -38,6 +38,14 @@ Install additional libraries from the system repository, e.g., `ping` utility
 -e DOCKER_MODULE_ADDITIONAL_DEPS="iputils-ping"
 ```
 
+## Compile the container on your own
+Use the built-in `test-build.sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build.sh` first before blindly running it.
+
+Once you run the script you will have the image built on your system.
+
+Docker images will be uploaded to the docker hub soon.
+
+
 ## Start container
 ### via docker
 ```
