@@ -4,7 +4,6 @@ LABEL maintainer="cslev <cslev@gmx.com>"
 #ARG branch=master
 
 ENV DEPS gettext \
-         git \
          net-tools \ 
         #  ethtool \
         #  dnsutils \
@@ -12,12 +11,13 @@ ENV DEPS gettext \
          ca-certificates \
          bash \
          iputils-ping \
-         #these three below are required to compile lol_dht22 for DHT22 sensor
-        #  gcc \
-        #  make \
-        #  automake-1.15 \
-         sudo 
-#         wget 
+         sudo
+
+ENV BUILD_DEPS  git \
+                make \
+                gcc \
+                automake-1.15
+                
 #ENV NODE_ENV production 
 
 COPY sources /tmp/
@@ -31,18 +31,19 @@ RUN set -e; \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -y;\
     DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y;\
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $DEPS;\
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $BUILD_DEPS;\
     #lol_dht22 is needed for aarch64, pure wiringpi+dht_var do not work
     # The commands below are for reference, it is compiled and binary attached to reduce resource usage
-    # git clone https://github.com/guation/WiringPi-arm64.git; \
-    # cd WiringPi-arm64/; \
-    # ./build;\
-    # cd ..;\
-    # git clone https://github.com/technion/lol_dht22; \
-    # cd lol_dht22;\
-    # ./configure;\
-    # make;\
-    # #cleaning
-    # DEBIAN_FRONTEND=noninteractive apt-get remove -y gcc make automake-1.15 git; \
+    git clone https://github.com/guation/WiringPi-arm64.git; \
+    cd WiringPi-arm64/; \
+    ./build;\
+    cd ..;\
+    git clone https://github.com/technion/lol_dht22; \
+    cd lol_dht22;\
+    ./configure;\
+    make;\
+    #cleaning
+    DEBIAN_FRONTEND=noninteractive apt-get remove -y $BUILD_DEPS; \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove --purge -y;\
     apt-get clean;\
     rm -rf /var/lib/apt/lists/*; \
