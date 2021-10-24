@@ -14,26 +14,28 @@ services:
       DOCKER_MODULE_INSTALL_CMD: 'npm install'
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
-      - './config:/opt/magic_mirror/config'
-      - './modules:/opt/magic_mirror/modules'
-      - './css:/opt/magic_mirror/css'
-      - './js:/opt/magic_mirror/js'
+      - './magicmirror/config:/opt/magic_mirror/config'
+      - './magicmirror/modules:/opt/magic_mirror/modules'
+      - './magicmirror/css:/opt/magic_mirror/css'
+      - './magicmirror/js:/opt/magic_mirror/js'
       ####  raspberry pi + gpio
-      #- '/sys/class/gpio:/sys/class/gpio'
+      - '/sys/class/gpio:/sys/class/gpio'
     dns: 1.1.1.1
     # ports:
       # - "80:8080"
     #### raspberry pi + gpio
     #devices:
-    #  - '/dev/mem:/dev/mem'
-    #  - '/dev/gpiomem:/dev/gpiomem'
-    #  - '/dev/ttyAMA0:/dev/ttyAMA0'
-    #
+     - '/dev/mem:/dev/mem'
+     - '/dev/gpiomem:/dev/gpiomem'
+     - '/dev/ttyAMA0:/dev/ttyAMA0'
+    
     # either add capabilities to restrict container rights, or make it privileged for full fledge
     # I personally not like privileged mode; better to figure out what capabilites your modules need
     cap_add: #MMM-Yeelight can work with these two capabilities and bridged to the home LAN (see below)
       - NET_ADMIN
       - NET_BROADCAST
+      - SYS_RAWIO
+      - SYS_RESOURCE
       #
       #let's add ALL for testing purposes
       #further capabilities defined here: https://docs.docker.com/engine/reference/run/
