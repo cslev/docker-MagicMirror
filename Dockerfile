@@ -43,6 +43,7 @@ RUN set -e; \
     cd lol_dht22;\
     ./configure;\
     make;\
+    cd ..;\
     #install MM
     git clone https://github.com/MichMich/MagicMirror.git . ;\
     cp -R modules /opt/default_modules;\
