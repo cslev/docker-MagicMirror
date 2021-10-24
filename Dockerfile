@@ -59,9 +59,7 @@ RUN set -e; \
     cp /tmp/docker-entrypoint.sh ./;\
     #load custom bashrc that contains coloring and shortened install commands
     mv /tmp/bashrc_template /root/.bashrc; \
-    . /root/.bashrc;\
-    #copy compiled lol_dht22 into working dir
-    cp -r /tmp/lol_dht22/ ./; 
+    . /root/.bashrc;
 
 EXPOSE 8080
 #basic first settings + install extra deps provided via docker env vars at runtime
