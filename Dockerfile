@@ -43,11 +43,6 @@ RUN set -e; \
     cd lol_dht22;\
     ./configure;\
     make;\
-    #cleaning
-    DEBIAN_FRONTEND=noninteractive apt-get remove -y $BUILD_DEPS; \
-    DEBIAN_FRONTEND=noninteractive apt-get autoremove --purge -y;\
-    apt-get clean;\
-    rm -rf /var/lib/apt/lists/*; \
     #install MM
     git clone https://github.com/MichMich/MagicMirror.git . ;\
     cp -R modules /opt/default_modules;\
@@ -60,7 +55,12 @@ RUN set -e; \
     cp /tmp/docker-entrypoint.sh ./;\
     #load custom bashrc that contains coloring and shortened install commands
     mv /tmp/bashrc_template /root/.bashrc; \
-    . /root/.bashrc;
+    . /root/.bashrc; \
+    #cleaning
+    DEBIAN_FRONTEND=noninteractive apt-get remove -y $BUILD_DEPS; \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove --purge -y;\
+    apt-get clean;\
+    rm -rf /var/lib/apt/lists/*; 
 
 EXPOSE 8080
 #basic first settings + install extra deps provided via docker env vars at runtime
