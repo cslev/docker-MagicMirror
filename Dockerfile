@@ -16,7 +16,8 @@ ENV DEPS gettext \
 ENV BUILD_DEPS  git \
                 make \
                 gcc \
-                automake-1.15
+                automake-1.15 \
+                libc6-dev
                 
 #ENV NODE_ENV production 
 
