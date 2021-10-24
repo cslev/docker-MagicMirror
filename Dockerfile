@@ -3,7 +3,8 @@ FROM node:16-buster-slim
 LABEL maintainer="cslev <cslev@gmx.com>"
 #ARG branch=master
 
-ENV DEPS gettext \
+ENV DEPS git \
+         gettext \
          net-tools \ 
         #  ethtool \
         #  dnsutils \
@@ -13,8 +14,7 @@ ENV DEPS gettext \
          iputils-ping \
          sudo
 
-ENV BUILD_DEPS  git \
-                make \
+ENV BUILD_DEPS  make \
                 gcc \
                 automake-1.15 \
                 libc6-dev
