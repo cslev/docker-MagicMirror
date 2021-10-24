@@ -35,6 +35,7 @@ RUN set -e; \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends $BUILD_DEPS;\
     #lol_dht22 is needed for aarch64, pure wiringpi+dht_var do not work
     # The commands below are for reference, it is compiled and binary attached to reduce resource usage
+    cd /tmp/;\
     git clone https://github.com/guation/WiringPi-arm64.git; \
     cd WiringPi-arm64/; \
     ./build;\
@@ -43,7 +44,7 @@ RUN set -e; \
     cd lol_dht22;\
     ./configure;\
     make;\
-    cd ..;\
+    cd /opt/magic_mirror;\
     #install MM
     git clone https://github.com/MichMich/MagicMirror.git . ;\
     cp -R modules /opt/default_modules;\
