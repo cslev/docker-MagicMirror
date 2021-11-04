@@ -18,7 +18,5 @@ docker run  -dit \
 	--volume $PWD/modules:/opt/magic_mirror/modules \
 	--volume $PWD/css:/opt/magic_mirror/css \
 	--volume $PWD/js:/opt/magic_mirror/js \
-	-e DOCKER_MODULE_INSTALL_GIT="https://github.com/slametps/MMM-Yeelight;https://github.com/Kreshnik/MMM-JokeAPI" \
-	-e DOCKER_MODULE_INSTALL_CMD="npm install"\
 	--name magicmirror \
 	cslev/magicmirror:latest
