@@ -17,8 +17,25 @@ The extra feature added are as follows:
     - `docker-compose.yml` template already contains a lot of extra things you can configure, e.g., give the right credentials to the container without elevating it into privileged mode.
 - Added nice BASH prompt if attaching to the container
 
+# Before heading towards
+Specify the architecture you are going to work with, and rename files accordingly.
+## x86 (32- or 64-bit)
+```
+mv Dockerfile_x86 Dockerfile
+mv docker-compose_x86.yml docker-compose.yml
+```
+## Raspberry PI 32-bit
+```
+mv Dockerfile_rpi_arm32 Dockerfile
+mv docker-compose_rpi.yml docker-compose.yml
+```
+## Raspberry PI 64-bit
+```
+mv Dockerfile_rpi_arm64 Dockerfile
+mv docker-compose_rpi.yml docker-compose.yml
+```
 
-## Compile the container on your own
+# Compile the container on your own
 Use the built-in `test-build.sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build.sh` first before blindly running it.
 
 Once you run the script you will have the image built on your system.
@@ -37,14 +54,17 @@ docker run  -dit \
 	--volume $PWD/css:/opt/magic_mirror/css \
 	--volume $PWD/js:/opt/magic_mirror/js \
 	--name magicmirror \
-	cslev/magicmirror:aarch64
+	cslev/magicmirror:latest
 ```
 Use further options if needed, e.g., privileged, cap_add.
 
-### via docker-compose
-Check `docker-compose.yml` for all details. Use specialized networking and bridging to let modules to access your local network.
+### via docker-compose (arch specific)
+Check the `docker-compose.yml` according to you architecture for all details. 
+Use specialized networking and bridging to let modules to access your local network.
+You can run with the default settings as well if there is no specific requirement. 
 
-Also, give the right credentials to the contaier to do so via `cap_add` instead of `privileged`. However, if you are unsure about the required capabilities, just use `privileged:true` at the beginning.
+Also, give the right credentials to the contaier to do so via `cap_add` instead of `privileged`. However, if you are unsure about the required capabilities, just use `privileged:true` at the beginning. 
+(This is mostly required for raspberry pi + gpio, but who know what modules you will use, e.g., MMM-Yeelight requires proper networking access.)
 
 If you want to bridge the container to your local network, first create a `macvlan` docker network. The example below assumes your home LAN is in the `192.168.22.0/24` subnet and your router is at `192.168.22.1`. Adopt it to your network. Also, `parent` defines your physical interface on the host network connected to the network. Use wired connection in this case...wireless was never working in my case.
 ```
