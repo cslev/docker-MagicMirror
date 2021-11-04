@@ -5,13 +5,7 @@ services:
     restart: unless-stopped
     image: cslev/magicmirror:latest
     hostname: magicmirror
-    environment:
-      #define here more  linux apps to be installed from repository after container run
-      DOCKER_MODULE_ADDITIONAL_DEPS: 'iputils-ping'
-      #separate extra modules to be install with ';'
-      DOCKER_MODULE_INSTALL_GIT: 'https://github.com/slametps/MMM-Yeelight;https://github.com/Kreshnik/MMM-JokeAPI'
-      #redefine default install cmd if needed - you might concatenate extra commands to install stuff
-      DOCKER_MODULE_INSTALL_CMD: 'npm install'
+
     volumes:
       - '/etc/localtime:/etc/localtime:ro'
       - './magicmirror/config:/opt/magic_mirror/config'
