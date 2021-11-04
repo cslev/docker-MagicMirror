@@ -7,7 +7,7 @@ This is a forked project from the original container [bastilimbach/docker-MagicM
 
 # What is new in this repository?
 Compared to other forks, this repository indeed adds some extra to the container but also changes it its base architecture.
-**For now, only aarch64 is supported for sure as additional libraries (see below) are installed for aarch64 (arm64)**
+**For now, only aarch64, arm32, and x86_32/64 are supported. aarch64 is actively tested, let me know if others do not work!**
 
 The extra feature added are as follows:
  - Upgraded to a newer *node* base image from *v12* to *v16-slim*
