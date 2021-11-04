@@ -11,12 +11,13 @@ ENV DEPS gettext \
          ca-certificates \
          bash \
          iputils-ping \
-         sudo
+         sudo \
+         git 
 
-ENV BUILD_DEPS  git \
-                make \
+ENV BUILD_DEPS  make \
                 gcc \
                 automake-1.15 \
+                automake \
                 libc6-dev
                 
 #ENV NODE_ENV production 
@@ -51,21 +52,23 @@ RUN set -e; \
     cp -R config /opt/default_config;\
     cp -R css /opt/default_css;\
     cp -R js /opt/default_js;\
-    npm install --unsafe-perm --silent;\
+    npm install --unsafe-perm;\
+    npm install simple-git;\
+    npm install request;\   
+    npm install nodehelper;\
     cp /tmp/mm-docker-config.js ./config/config.js;\
     chmod +x /tmp/docker-entrypoint.sh;\
     cp /tmp/docker-entrypoint.sh ./;\
     #load custom bashrc that contains coloring and shortened install commands
     mv /tmp/bashrc_template /root/.bashrc; \
-    . /root/.bashrc; \
+    #. /root/.bashrc; \
     #cleaning
-    DEBIAN_FRONTEND=noninteractive apt-get remove -y $BUILD_DEPS; \
-    DEBIAN_FRONTEND=noninteractive apt-get autoremove --purge -y;\
+    #DEBIAN_FRONTEND=noninteractive apt-get remove -y $BUILD_DEPS; \
+    #DEBIAN_FRONTEND=noninteractive apt-get autoremove --purge -y;\
     apt-get clean;\
     rm -rf /var/lib/apt/lists/*; 
 
 EXPOSE 8080
-#basic first settings + install extra deps provided via docker env vars at runtime
 ENTRYPOINT ["./docker-entrypoint.sh"]
 #run node server, i.e., run MM
 #CMD ["bash"]
