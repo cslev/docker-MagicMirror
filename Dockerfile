@@ -3,7 +3,8 @@ FROM node:16-buster-slim
 LABEL maintainer="cslev <cslev@gmx.com>"
 #ARG branch=master
 
-ENV DEPS gettext \
+ENV DEPS git \
+         gettext \
          net-tools \ 
         #  ethtool \
         #  dnsutils \
