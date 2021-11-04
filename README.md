@@ -6,37 +6,17 @@
 This is a forked project from the original container [bastilimbach/docker-MagicMirror](https://github.com/bastilimbach/docker-MagicMirror)
 
 # What is new in this repository?
-Compared to other forks, this repository indeed adds some extra to the container. 
+Compared to other forks, this repository indeed adds some extra to the container but also changes it its base architecture.
+**For now, only aarch64 is supported for sure as additional libraries (see below) are installed for aarch64 (arm64)**
 
 The extra feature added are as follows:
  - Upgraded to a newer *node* base image from *v12* to *v16-slim*
- - Added some extra networking packages to let some home network modules to run properly (e.g., net-tools, ping for MMM-Yeelight)
- - Added capabilities to install extra packages and modules during running the container
-    - the original `docker-entrypoint.sh` is modified to be able to:
-        - download and install further thirdparty MMM modules from github by defining them via docker ENV variable
-        - redefine 'npm install' command for these extra modules if needed
-        - install further system packages from the repo if needed, e.g., libraries for development
-- For development purposes, not only `config` and `modules` are used as *volume* but `css` and `js`, too
+ - Added proper loldht_22 and wiringpi modules to let the container use DHT22 sensor properly straight away
+ - For development purposes, not only `config` and `modules` are used as *volume* but `css` and `js`, too
  - Added `docker-compose.yml` for docker-compose and easy install
     - `docker-compose.yml` template already contains a lot of extra things you can configure, e.g., give the right credentials to the container without elevating it into privileged mode.
 - Added nice BASH prompt if attaching to the container
 
-
-## Install additional modules
-You can install additional modules by defining a docker environment variable and separating the modules via ';'
-```
--e DOCKER_MODULE_INSTALL_GIT="https://github.com/slametps/MMM-Yeelight;https://github.com/Kreshnik/MMM-JokeAPI"
-```
-
-Redefine install script of 'npm install' if you need something more special
-```
--e DOCKER_MODULE_INSTALL_CMD="npm install"
-```
-
-Install additional libraries from the system repository, e.g., `ping` utility
-```
--e DOCKER_MODULE_ADDITIONAL_DEPS="iputils-ping"
-```
 
 ## Compile the container on your own
 Use the built-in `test-build.sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build.sh` first before blindly running it.
@@ -56,11 +36,8 @@ docker run  -dit \
 	--volume $PWD/modules:/opt/magic_mirror/modules \
 	--volume $PWD/css:/opt/magic_mirror/css \
 	--volume $PWD/js:/opt/magic_mirror/js \
-	-e DOCKER_MODULE_INSTALL_GIT="https://github.com/slametps/MMM-Yeelight;https://github.com/Kreshnik/MMM-JokeAPI" \
-	-e DOCKER_MODULE_INSTALL_CMD="npm install"\
-	-e DOCKER_MODULE_ADDITIONAL_DEPS="iputils-ping"\
 	--name magicmirror \
-	cslev/magicmirror:latest
+	cslev/magicmirror:aarch64
 ```
 Use further options if needed, e.g., privileged, cap_add.
 
