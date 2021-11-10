@@ -13,7 +13,8 @@ ENV DEPS git \
          bash \
          iputils-ping \
          sudo \
-         git 
+         git \
+         iproute2 
 
 ENV BUILD_DEPS  make \
                 gcc \
