@@ -90,6 +90,9 @@ priv_lan:
 ### Privileged vs. cap_add
 This is a real debate among docker users and masters. Normally, *privileged* can be considered as running something as *root* with access to all system-level components. *cap_add* is something like *sudo* + *proper access control*. I personally like *cap_add* better because I am in control of what my container can do (you never know what a MagicMirror module might have hidden). To find out what you need, just check what capabilties are available [here](https://docs.docker.com/engine/reference/run/)
 
+### Networking-related modules
+[Docker-compose bug?]: If you want to run modules that interact with elements in your local network (e.g., MMM-Yeelight), you have to assure that the primary interface inside the container is not the NAT'd docker interface but the one that have access to the LAN (e.g., the `priv_lan` above).
+Easiest way to do so is to not 
 
 # More info
 Visit the original repository for more basic information that is you did not find here.
