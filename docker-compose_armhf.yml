@@ -1,0 +1,59 @@
+version: "3.6"
+services:
+  magicmirror:
+    container_name: magicmirror
+    restart: unless-stopped
+    image: cslev/magicmirror:armhf
+    hostname: magicmirror
+
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - './magicmirror/config:/opt/magic_mirror/config'
+      - './magicmirror/modules:/opt/magic_mirror/modules'
+      - './magicmirror/css:/opt/magic_mirror/css'
+      - './magicmirror/js:/opt/magic_mirror/js'
+      ####  raspberry pi + gpio
+      - '/sys/class/gpio:/sys/class/gpio'
+    # comment if you want default
+    dns: 1.1.1.1
+    # YOU CAN DISABLE THIS IF USING macvlan and direct IP address from your router
+    #see section networks
+    ports:
+      - "80:8080"
+    #### raspberry pi + gpio
+    devices:
+     - '/dev/mem:/dev/mem'
+     - '/dev/gpiomem:/dev/gpiomem'
+     - '/dev/ttyAMA0:/dev/ttyAMA0'
+    
+    # either add capabilities to restrict container rights, or make it privileged for full fledge
+    # I personally not like privileged mode; better to figure out what capabilites your modules need
+    cap_add: 
+      - SYS_RAWIO
+      #add  - ALL for testing purposes
+      #further capabilities defined here: https://docs.docker.com/engine/reference/run/
+    #Use privileged if nothing works :)
+      # privileged: true
+    
+#     ####  ADVANCED NETWORKING IF NEEDED
+#     # To fix docker IP address and assign LAN as well
+    # networks:
+    #   internal:
+    #     ipv4_address: 172.30.1.2
+    #   priv_lan: #bridge container directly to our home LAN
+    #     ipv4_address: 192.168.22.15 #visit your router's admin page to avoid IP collision and add a fixed IP for the container there
+
+# #define the networks used by the container
+# networks:
+#   internal:
+#     ipam:
+#       config:
+#         - subnet: 172.30.1.2
+  # priv_lan:
+  #   external:
+  #     name: priv_lan
+#   #FOR PRIV_LAN, CREATE DOCKER NETWORK FIRST AS BELOW IN A TERMINAL (adapt it to your settings)
+#   #docker network create -d macvlan \
+#   #    --subnet=192.168.22.0/24 \
+#   #    --gateway=192.168.22.1 \
+#   #    -o parent=eth0 priv_lan

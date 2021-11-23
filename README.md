@@ -19,24 +19,26 @@ The extra feature added are as follows:
 
 # Before heading towards
 Specify the architecture you are going to work with, and rename files accordingly.
-## x86 (32- or 64-bit)
+## x86 (64-bit)
 ```
-mv Dockerfile_x86 Dockerfile
-mv docker-compose_x86.yml docker-compose.yml
+mv Dockerfile_amd64 Dockerfile
+mv docker-compose_amd64.yml docker-compose.yml
 ```
-## Raspberry PI 32-bit
+## x86 (32-bit)
+Check `Dockerfile_amd64` and `docker-compose_amd64` files and adapt them to i386.
+## Raspberry PI/Arm 32-bit
 ```
-mv Dockerfile_rpi_arm32 Dockerfile
-mv docker-compose_rpi.yml docker-compose.yml
+mv Dockerfile_armhf Dockerfile
+mv docker-compose_armhf.yml docker-compose.yml
 ```
-## Raspberry PI 64-bit
+## Raspberry PI/Arm 64-bit
 ```
-mv Dockerfile_rpi_arm64 Dockerfile
-mv docker-compose_rpi.yml docker-compose.yml
+mv Dockerfile_aarch64 Dockerfile
+mv docker-compose_aarch64.yml docker-compose.yml
 ```
 
 # Compile the container on your own
-Use the built-in `test-build.sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build.sh` first before blindly running it.
+Use the corresponding built-in `test-build_[ARCH].sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build_[ARCH].sh` first before blindly running it.
 
 Once you run the script you will have the image built on your system.
 
@@ -45,6 +47,7 @@ Docker images will be uploaded to the docker hub soon.
 
 ## Start container
 ### via docker
+Substitute `[ARCH]` with your architecture
 ```
 docker run  -dit \
 	--publish 80:8080 \
@@ -54,7 +57,7 @@ docker run  -dit \
 	--volume $PWD/css:/opt/magic_mirror/css \
 	--volume $PWD/js:/opt/magic_mirror/js \
 	--name magicmirror \
-	cslev/magicmirror:latest
+	cslev/magicmirror:[ARCH]
 ```
 Use further options if needed, e.g., privileged, cap_add.
 

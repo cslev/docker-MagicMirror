@@ -10,7 +10,7 @@ mkdir js
 
 docker rm -f magicmirror
 docker rmi cslev/magicmirror:latest
-docker build -t cslev/magicmirror:latest .
+docker build -t cslev/magicmirror:aarch64 .
 docker run  -dit \
 	--publish 80:8080 \
 	--restart always \
@@ -19,4 +19,4 @@ docker run  -dit \
 	--volume $PWD/css:/opt/magic_mirror/css \
 	--volume $PWD/js:/opt/magic_mirror/js \
 	--name magicmirror \
-	cslev/magicmirror:latest
+	cslev/magicmirror:aarch64

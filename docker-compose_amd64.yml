@@ -3,7 +3,7 @@ services:
   magicmirror:
     container_name: magicmirror
     restart: unless-stopped
-    image: cslev/magicmirror:latest
+    image: cslev/magicmirror:amd64
     hostname: magicmirror
 
     volumes:
@@ -12,30 +12,14 @@ services:
       - './magicmirror/modules:/opt/magic_mirror/modules'
       - './magicmirror/css:/opt/magic_mirror/css'
       - './magicmirror/js:/opt/magic_mirror/js'
-      ####  raspberry pi + gpio
-      - '/sys/class/gpio:/sys/class/gpio'
-    # comment if you want default
+   # comment if you want default
     dns: 1.1.1.1
     # YOU CAN DISABLE THIS IF USING macvlan and direct IP address from your router
     #see section networks
     ports:
       - "80:8080"
-    #### raspberry pi + gpio
-    devices:
-     - '/dev/mem:/dev/mem'
-     - '/dev/gpiomem:/dev/gpiomem'
-     - '/dev/ttyAMA0:/dev/ttyAMA0'
     
-    # either add capabilities to restrict container rights, or make it privileged for full fledge
-    # I personally not like privileged mode; better to figure out what capabilites your modules need
-    cap_add: 
-      - SYS_RAWIO
-      #add  - ALL for testing purposes
-      #further capabilities defined here: https://docs.docker.com/engine/reference/run/
-    #Use privileged if nothing works :)
-      # privileged: true
-    
-#     ####  ADVANCED NETWORKING IF NEEDED
+    ####  ADVANCED NETWORKING IF NEEDED
 #     # To fix docker IP address and assign LAN as well
     # networks:
     #   internal:
