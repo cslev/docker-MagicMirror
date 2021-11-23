@@ -37,6 +37,13 @@ mv Dockerfile_aarch64 Dockerfile
 mv docker-compose_aarch64.yml docker-compose.yml
 ```
 
+# Images are available on DockerHub
+[https://hub.docker.com/r/cslev/magicmirror](https://hub.docker.com/r/cslev/magicmirror)
+
+## Docker-compose
+Use `docker-compose` or `docker` straight away without compilation. See details below.
+
+
 # Compile the container on your own
 Use the corresponding built-in `test-build_[ARCH].sh` to create your container. The script will also delete and recreate directories, and removes old docker image with the same name. Please, check `test-build_[ARCH].sh` first before blindly running it.
 
